@@ -20,19 +20,17 @@ namespace OnlineExamAppClient.Pages
             IsAddNewTest = true;
         }
 
+        void UserNameChanged(EventArgs args)
+        {
+            userName = args.ToString();
+        }
+
         void CloseNewTest(bool args)
         {
             IsAddNewTest = false;
         }
 
-        public AdminDashboard()
-        {
-            //SimulateTestModel model = new SimulateTestModel();
-            //model.TestName = "Test 1";
-            //model.Duration = 1;
-            //model.Percentage = 50;
-            //model.SerialNumber = 1;
-            //Tests.Add(model);
-        }
+        
+
     }
 }
