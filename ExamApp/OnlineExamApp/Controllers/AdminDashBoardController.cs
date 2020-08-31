@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using CommonProject.AdminDashBoardModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using OnlineExamApp.Common;
 using OnlineExamApp.Model;
@@ -30,25 +32,25 @@ namespace OnlineExamApp.Controllers
         }
 
         // GET: api/AdminDashBoard
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Simtest>>> GetSimtest()
-        {
-            return await _context.Simtest.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Simtest>>> GetSimtest()
+        //{
+        //    return await _context.Simtest.ToListAsync();
+        //}
 
         // GET: api/AdminDashBoard/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Simtest>> GetSimtest(int id)
-        {
-            var simtest = await _context.Simtest.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Simtest>> GetSimtest(int id)
+        //{
+        //    var simtest = await _context.Simtest.FindAsync(id);
 
-            if (simtest == null)
-            {
-                return NotFound();
-            }
+        //    if (simtest == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return simtest;
-        }
+        //    return simtest;
+        //}
 
         // PUT: api/AdminDashBoard/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -82,6 +84,29 @@ namespace OnlineExamApp.Controllers
             }
 
             return NoContent();
+        }
+
+        // POST: api/AdminDashBoard
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<SimulateTestModel>>> GetSimtest(string Id)
+        {
+            // map model to entity
+            var d = await _context.Simtest.Where(x => x.EmailId == Id).ToListAsync();
+            List<SimulateTestModel> sm = new List<SimulateTestModel>();
+            int count = 1;
+            foreach(var item in d){
+
+                SimulateTestModel md = new SimulateTestModel();
+                md.SerialNumber = count++;
+                md.Percentage = item.Percentage;
+                md.TestId = item.TestId;
+                md.TestName = item.TestName;
+                sm.Add(md);
+            }
+
+            return sm;
         }
 
         // POST: api/AdminDashBoard
