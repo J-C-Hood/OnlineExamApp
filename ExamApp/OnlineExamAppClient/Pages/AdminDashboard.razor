@@ -1,78 +1,65 @@
 @page "/AdminDashboard"
-@inject ILogInHttpRepository AuthService
 @inject HttpClient Http
-<AuthorizeView>
-    <Authorized>
-        <h1>Admin Dashboard</h1>
+    <AuthorizeView>
+        <Authorized>
+            <h1>Admin Dashboard</h1>
 
-        <div class="form-group">
-            <label for="username" @onactivate="UserNameChanged">User: @context.User.Identity.Name</label>
-            
-            <div>
-                <label for="rolename">Role: Admin</label>
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Serial No:</th>
-                        <th>Test Name</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var test in Tests)
-                    {
+            <div class="form-group">
+                <label for="username">User Name: @context.User.Identity.Name</label>
+                <div>
+                    <label for="rolename">Role Name: Admin</label>
+                </div>
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>@test.SerialNumber</td>
-                            <td>@test.TestName</td>
-                            <td><button @onclick="@(() => Edit(test))">Edit</button></td>
-                            <td><button @onclick="@(() => Remove(test))">Delete</button></td>
-                            <td><button @onclick="@(() => Add(test))">Add Question</button></td>
-                            <td><button @onclick="@(() => Assign(test))">Assign To Students</button></td>
+                            <th>Serial No:</th>
+                            <th>Test Name</th>
+                            <th></th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            <button @onclick="AddNewTest" class="btn btn-primary">Create New Test</button>
+                    </thead>
+                    <tbody>
+                        @foreach (var test in Tests)
+                        {
 
-        </div>
-        @if (IsAddNewTest)
-        {
-            <NewTest OnTestAdded="ClickHandler" OnCloseTest="CloseNewTest" />
-        }
-       
-    </Authorized>
-</AuthorizeView>
+                            <tr>
+                                <td>@test.SerialNumber</td>
+                                <td>@test.TestName</td>
+                                <td><button @onclick="@(() => Edit(test))">Edit</button></td>
+                                <td><button @onclick="@(() => Remove(test))">Delete</button></td>
+                                <td><button @onclick="@(() => Add(test))">Add Question</button></td>
+                                <td><button @onclick="@(() => Assign(test))">Assign To Students</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button @onclick="AddNewTest" class="btn btn-primary">Create New Test</button>
 
-@code {
-
-    private bool IsAddNewTest = false;
-    private string userName;
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
-
-    void ClickHandler(SimulateTestModel added)
-    {
-        if (added != null)
-        {
-            if ((added.TestName.Length > 1))
+            </div>
+            @if(IsAddNewTest)
             {
-                added.SerialNumber = Tests.Count +1;
-                Tests.Add(added);
-                StateHasChanged();
+            <NewTest OnTestAdded="ClickHandler" OnCloseTest="CloseNewTest"/>            
             }
-        }
-    }
 
-    protected override async Task OnInitializedAsync()
-    {
+        </Authorized>
+        </AuthorizeView>
 
-        // var result = await AuthService.GetLoggedInUser();
-        var authState = await authenticationStateTask;
-        var user = authState.User.Identity.Name;
-        var listoftests = await AuthService.GetTasks(user);
-        Tests = listoftests.ToList();
-    }
-}
+            @code {
+
+                private bool IsAddNewTest = false;
+
+                void ClickHandler(SimulateTestModel added)
+                {
+                    if(added != null)
+                    {
+                        if((added.TestName.Length > 1))
+                        {
+                            Tests.Add(added);
+                            StateHasChanged();
+                        }
+                    }
+                }
+
+
+            }
 

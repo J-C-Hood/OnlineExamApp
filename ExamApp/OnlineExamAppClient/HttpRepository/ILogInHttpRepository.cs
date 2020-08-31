@@ -1,5 +1,4 @@
-﻿using CommonProject.AdminDashBoardModel;
-using CommonProject.Common;
+﻿using CommonProject.Common;
 using OnlineExamApp.Model.AdminDashBoardModel;
 using OnlineExamApp.Model.CustomerModel;
 using System;
@@ -15,8 +14,5 @@ namespace OnlineExamAppClient.HttpRepository
         Task Logout();
         Task<RegisterResult> Register(RegisterModel registerModel);
         Task<AddTestModel> Addtest(AddTestModel testmodel);
-        Task<IEnumerable<SimulateTestModel>> GetTasks(string emailId);
-        Task<string>GetLoggedInUser();
-
     }
 }

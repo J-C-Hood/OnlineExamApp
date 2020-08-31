@@ -1,5 +1,4 @@
 ﻿using Blazored.LocalStorage;
-using CommonProject.AdminDashBoardModel;
 using CommonProject.Common;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -27,7 +26,6 @@ namespace OnlineExamAppClient.HttpRepository
         private string serviceEndPoint = "https://localhost:44375/Customeraccounts/authenticate";
         private string serviceEndPoint2 = "https://localhost:44375/Customeraccounts/register";
         private string serviceEndPoint3 = "https://localhost:44375/api/admindashboard/addtest";
-        private string serviceEndPoint4 = "https://localhost:44375/api/AdminDashBoard/";
 
 
         public LogInHttpRepository(HttpClient client, AuthenticationStateProvider authenticationStateProvider,
@@ -78,42 +76,5 @@ namespace OnlineExamAppClient.HttpRepository
             return result;
         }
 
-        public async Task<IEnumerable<SimulateTestModel>> GetTasks(string emailId)
-        {
-            //_client.BaseAddress = new Uri("https://localhost:44375");
-            //List<SimulateTestModel> taskList = new List<SimulateTestModel>();
-
-            //// Setting content type.  
-            //_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //// Initialization.  
-            //HttpResponseMessage response = new HttpResponseMessage();
-
-            //// HTTP GET  
-            //response = await _client.GetAsync("AdminDashBoard/" + emailId).ConfigureAwait(false);
-
-            //// Verification  
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    // Reading Response.  
-            //    string result = response.Content.ReadAsStringAsync().Result;
-            //    taskList = JsonSerializer.Deserialize<IEnumerable<SimulateTestModel>>(result).ToList();
-            //}
-
-            //return taskList;
-            // var requestMessage = new HttpRequestMessage(HttpMethod.Get, serviceEndPoint2);
-            // requestMessage.SetBrowserRequestMode(BrowserRequestMode.Cors);
-            serviceEndPoint4 = serviceEndPoint4  + emailId;
-            return await _client.GetJsonAsync<List<SimulateTestModel>>(serviceEndPoint4);
-        }   
-        
-        public async Task<string> GetLoggedInUser()
-        {
-             var res=  await _authenticationStateProvider.GetAuthenticationStateAsync();
-            return res.User.Identity.Name;
-
-
-        }
-       
     }
 }
