@@ -1,0 +1,65 @@
+@page "/AdminDashboard"
+@inject HttpClient Http
+    <AuthorizeView>
+        <Authorized>
+            <h1>Admin Dashboard</h1>
+
+            <div class="form-group">
+                <label for="username">User Name: @context.User.Identity.Name</label>
+                <div>
+                    <label for="rolename">Role Name: Admin</label>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Serial No:</th>
+                            <th>Test Name</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var test in Tests)
+                        {
+
+                            <tr>
+                                <td>@test.SerialNumber</td>
+                                <td>@test.TestName</td>
+                                <td><button @onclick="@(() => Edit(test))">Edit</button></td>
+                                <td><button @onclick="@(() => Remove(test))">Delete</button></td>
+                                <td><button @onclick="@(() => Add(test))">Add Question</button></td>
+                                <td><button @onclick="@(() => Assign(test))">Assign To Students</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button @onclick="AddNewTest" class="btn btn-primary">Create New Test</button>
+
+            </div>
+            @if(IsAddNewTest)
+            {
+            <NewTest OnTestAdded="ClickHandler" OnCloseTest="CloseNewTest"/>            
+            }
+
+        </Authorized>
+        </AuthorizeView>
+
+            @code {
+
+                private bool IsAddNewTest = false;
+
+                void ClickHandler(SimulateTestModel added)
+                {
+                    if(added != null)
+                    {
+                        if((added.TestName.Length > 1))
+                        {
+                            Tests.Add(added);
+                            StateHasChanged();
+                        }
+                    }
+                }
+
+
+            }
+

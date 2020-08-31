@@ -1,0 +1,130 @@
+@page "/register"
+@inject ILogInHttpRepository AuthService
+@inject NavigationManager NavigationManager
+
+<h1>Register</h1>
+
+@if (ShowErrors)
+{
+    <div class="alert alert-danger" role="alert">
+        @foreach (var error in Errors)
+        {
+            <p>@error</p>
+        }
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Please enter your details</h5>
+        <EditForm Model="RegisterModel" OnValidSubmit="HandleRegistration">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <InputText Id="email" class="form-control" @bind-Value="RegisterModel.EmailId" />
+                <ValidationMessage For="@(() => RegisterModel.EmailId)" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <InputText Id="password" type="password" class="form-control" @bind-Value="RegisterModel.Password" />
+                <ValidationMessage For="@(() => RegisterModel.Password)" />
+            </div>
+            <div class="form-group">
+                <label for="fastname">Fast Name</label>
+                <InputText Id="fastname" class="form-control" @bind-Value="RegisterModel.FirstName" />
+                <ValidationMessage For="@(() => RegisterModel.FirstName)" />
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <InputText Id="lastname" class="form-control" @bind-Value="RegisterModel.LastName" />
+                <ValidationMessage For="@(() => RegisterModel.LastName)" />
+            </div>
+            <div class="form-group">
+                <label for="phobenumber">Phone Number</label>
+                <InputNumber Id="phonenumber" class="form-control" @bind-Value="RegisterModel.PhoneNumber" />
+                <ValidationMessage For="@(() => RegisterModel.PhoneNumber)" />
+            </div>
+
+            <div class="form-group">
+                @foreach (var item in Enum.GetNames(typeof(Roles)))
+                {
+                    <div>
+                        <input type="radio" name="role" id="@item" value="@item" @onchange="RadioSelection" checked=@(RadioValue.Equals(item,StringComparison.OrdinalIgnoreCase)) />
+                        <label for="@item">@item</label>
+                    </div>
+                }
+
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Country
+                </label>
+                @*<input id="countryinput" list="country" @onchange="@((args) => RegisterModel.Country = args.Value.ToString())" />*@
+                <select @onchange="CountryUpdated" id="country">
+                    @foreach (var country in Countries)
+                    {
+                        <option value=@country>@country</option>
+}
+                </select>
+
+                <label>
+                    States
+                </label>
+                @*<input id="stateInput" list="states"   @onchange="@((args) => RegisterModel.State = args.Value.ToString())" />*@
+                <select @onchange="StatesUpdated" id="states">
+                    @foreach (var template in States)
+                    {
+                        <option value=@template>@template</option>
+}
+                </select>
+
+                <label>
+                    City
+                </label>
+                @*<input id="cityinput" list="cities" @onchange="@((args) => RegisterModel.State = args.Value.ToString())" />*@
+                <select @onchange="CitiesUpdated" id="cities">
+                    @foreach (var template in Cities)
+                    {
+                        <option value=@template>@template</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="termsandcon">Agree to Terms And Conditions</label>
+                <input type="checkbox" @bind="checkedValue">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    private RegisterModel RegisterModel = new RegisterModel();
+    private bool ShowErrors;
+    private IEnumerable<string> Errors;
+    private bool checkedValue = false;
+
+
+    private async Task HandleRegistration()
+    {
+        ShowErrors = false;
+
+        var result = await AuthService.Register(RegisterModel);
+
+        if (result.Successful)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            Errors = result.Errors;
+            ShowErrors = true;
+        }
+    }
+
+}
