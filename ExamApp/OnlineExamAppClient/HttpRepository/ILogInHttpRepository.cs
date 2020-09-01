@@ -14,7 +14,7 @@ namespace OnlineExamAppClient.HttpRepository
         Task<LoginResult> Login(AuthenticateModel loginModel);
         Task Logout();
         Task<RegisterResult> Register(RegisterModel registerModel);
-        Task<AddTestModel> Addtest(AddTestModel testmodel);
+        Task Addtest(AddTestModel testmodel);
         Task<IEnumerable<SimulateTestModel>> GetTasks(string emailId);
         Task<string>GetLoggedInUser();
 

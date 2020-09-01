@@ -6,7 +6,7 @@
         <h1>Admin Dashboard</h1>
 
         <div class="form-group">
-            <label for="username" @onactivate="UserNameChanged">User: @context.User.Identity.Name</label>
+            <label for="username" >User: @context.User.Identity.Name</label>
             
             <div>
                 <label for="rolename">Role: Admin</label>
@@ -39,7 +39,7 @@
         </div>
         @if (IsAddNewTest)
         {
-            <NewTest OnTestAdded="ClickHandler" OnCloseTest="CloseNewTest" />
+            <NewTest OnTestAdded="ClickHandler" OnCloseTest="CloseNewTest" CurrentUserName="@UserName"/>
         }
        
     </Authorized>
@@ -48,21 +48,14 @@
 @code {
 
     private bool IsAddNewTest = false;
-    private string userName;
+    public string UserName { get; set; }
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
 
     void ClickHandler(SimulateTestModel added)
-    {
-        if (added != null)
-        {
-            if ((added.TestName.Length > 1))
-            {
-                added.SerialNumber = Tests.Count +1;
-                Tests.Add(added);
-                StateHasChanged();
-            }
-        }
+    {      
+        added.SerialNumber = Tests.Count + 1;
+        Tests.Add(added);
     }
 
     protected override async Task OnInitializedAsync()
@@ -73,6 +66,8 @@
         var user = authState.User.Identity.Name;
         var listoftests = await AuthService.GetTasks(user);
         Tests = listoftests.ToList();
+
+        UserName = user;
     }
 }
 

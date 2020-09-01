@@ -20,10 +20,10 @@ namespace OnlineExamAppClient.Pages
             IsAddNewTest = true;
         }
 
-        void UserNameChanged(EventArgs args)
-        {
-            userName = args.ToString();
-        }
+        //void UserNameChanged(EventArgs args)
+        //{
+        //    userName = args.ToString();
+        //}
 
         void CloseNewTest(bool args)
         {

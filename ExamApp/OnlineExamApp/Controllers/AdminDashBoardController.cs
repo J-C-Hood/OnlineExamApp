@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CommonProject.AdminDashBoardModel;
+using CommonProject.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -113,14 +114,15 @@ namespace OnlineExamApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost("addtest")]
-        public async Task<ActionResult<AddTestModel>> PostSimtest([FromBody]AddTestModel model)
+        public  IActionResult PostSimtest([FromBody]AddTestModel model)
         {
             // map model to entity
             var simtest = _mapper.Map<Simtest>(model);
             _context.Simtest.Add(simtest);
-            await _context.SaveChangesAsync();
+             _context.SaveChangesAsync();
+            return Ok(new RegisterResult { Successful = true });
 
-            return CreatedAtAction("GetSimtest", new { id = simtest.TestId }, simtest);
+            // return CreatedAtAction("GetSimtest", new { id = simtest.TestId }, simtest);
         }
 
         // POST: api/AdminDashBoard

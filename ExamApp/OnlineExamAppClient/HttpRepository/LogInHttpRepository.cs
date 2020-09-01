@@ -71,11 +71,10 @@ namespace OnlineExamAppClient.HttpRepository
             return result;
         }
 
-        public async Task<AddTestModel> Addtest(AddTestModel testmodel)
+        public async Task Addtest(AddTestModel testmodel)
         {
-            var result = await _client.PostJsonAsync<AddTestModel>(serviceEndPoint3, testmodel);
-
-            return result;
+           await _client.PostJsonAsync<AddTestModel>(serviceEndPoint3, testmodel);
+            
         }
 
         public async Task<IEnumerable<SimulateTestModel>> GetTasks(string emailId)

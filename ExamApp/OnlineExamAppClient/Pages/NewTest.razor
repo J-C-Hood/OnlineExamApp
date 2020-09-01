@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-body">       
-        <EditForm Model="TestModel" OnValidSubmit="HandleRegistration">
+        <EditForm Model="TestModel" OnValidSubmit="HandleRegistration" >
             <DataAnnotationsValidator />
             <ValidationSummary />
 
@@ -24,6 +24,7 @@
             <button @onclick="CloseNewTest" class="btn btn-primary">Close</button>
             <button type="submit" class="btn btn-primary">Submit</button>
         </EditForm>
+       
     </div>
 </div>
 
@@ -33,12 +34,15 @@
     private AddTestModel TestModel = new AddTestModel();
     private async Task HandleRegistration()
     {
-        var result = await AuthService.Addtest(TestModel);
+        TestModel.EmailId = CurrentUserName;
+        await AuthService.Addtest(TestModel);
         SimulateTestModel sm = new SimulateTestModel();
-        sm.TestId = result.TestId;
-        sm.TestName = result.TestName;
+        //sm.TestId = result.TestId;
+        sm.TestName = TestModel.TestName;
+        sm.emailId = TestModel.EmailId;
         await OnTestAdded.InvokeAsync(sm);
     }
-}
+
+   }
 
 

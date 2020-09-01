@@ -11,5 +11,7 @@ namespace CommonProject.AdminDashBoardModel
         public string TestName { get; set; }
         public float? Duration { get; set; }
         public float? Percentage { get; set; }
+
+        public string emailId { get; set; }
     }
 }

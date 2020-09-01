@@ -8,12 +8,11 @@ namespace OnlineExamApp.Model.AdminDashBoardModel
 {
     public class AddTestModel
     {
-        public int TestId;
-
-        public string customerEmailId;
+        public int TestId { get; set; }
         public string TestName { get; set; }
-        public float Duration { get; set; }
-        public float Percentage { get; set; }
-        public int Role { get; set; }
+        public float? Duration { get; set; }
+        public float? Percentage { get; set; }
+        public int? NoOfQuestions { get; set; }
+        public string EmailId { get; set; }
     }
 }
